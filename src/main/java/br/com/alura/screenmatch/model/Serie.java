@@ -3,6 +3,7 @@ package br.com.alura.screenmatch.model;
 import java.util.OptionalDouble;
 
 import br.com.alura.screenmatch.model.enums.Categoria;
+import br.com.alura.screenmatch.service.ConsultaChatGPT;
 
 public class Serie {
 
@@ -22,6 +23,7 @@ public class Serie {
 		this.atores = dadosSerie.atores();
 		this.poster = dadosSerie.poster();
 		this.sinopse = dadosSerie.sinopse();
+//		this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
 	}
 
 	public String getTitulo() {
