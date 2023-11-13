@@ -14,7 +14,7 @@ public class Serie {
 	private String poster;
 	private String sinopse;
 
-	private Serie(DadosSerie dadosSerie) {
+	public Serie(DadosSerie dadosSerie) {
 		this.titulo = dadosSerie.titulo();
 		this.totalTemporadas = dadosSerie.totalTemporadas();
 		this.avaliacao = OptionalDouble.of(Double.valueOf(dadosSerie.avaliacao())).orElse(0);
@@ -79,5 +79,27 @@ public class Serie {
 	public void setSinopse(String sinopse) {
 		this.sinopse = sinopse;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("[Genero = ");
+		builder.append(genero);
+		builder.append(", titulo = ");
+		builder.append(titulo);
+		builder.append(", totalTemporadas = ");
+		builder.append(totalTemporadas);
+		builder.append(", avaliacao = ");
+		builder.append(avaliacao);
+		builder.append(", atores = ");
+		builder.append(atores);
+		builder.append(", poster = ");
+		builder.append(poster);
+		builder.append(", sinopse = ");
+		builder.append(sinopse);
+		builder.append("]");
+		return builder.toString();
+	}
+	
 
 }
