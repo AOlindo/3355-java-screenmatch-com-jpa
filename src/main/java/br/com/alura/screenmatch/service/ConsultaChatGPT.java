@@ -7,7 +7,7 @@ public class ConsultaChatGPT {
 
 	public static String obterTraducao(String texto) {
 		
-		OpenAiService service = new OpenAiService("");
+		OpenAiService service = new OpenAiService(System.getenv("OPENAI_APIKEY"));
 
 		CompletionRequest requisicao = CompletionRequest.builder()
 				.model("text-davinci-003")

@@ -41,6 +41,10 @@ public class Serie {
 	//@Transient é usado quando não vai salvar o objeto no banco
 	@Transient
 	private List<Episodio> episodios = new ArrayList<>();
+	
+	public Serie() {
+		
+	}
 
 	public Serie(DadosSerie dadosSerie) {
 		this.titulo = dadosSerie.titulo();
@@ -49,8 +53,8 @@ public class Serie {
 		this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
 		this.atores = dadosSerie.atores();
 		this.poster = dadosSerie.poster();
-		this.sinopse = dadosSerie.sinopse();
-//		this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
+//		this.sinopse = dadosSerie.sinopse();
+		this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim();
 	}
 
 	public Long getId() {
@@ -110,7 +114,7 @@ public class Serie {
 	}
 
 	public String getSinopse() {
-		return sinopse;
+		return ConsultaChatGPT.obterTraducao(this.sinopse).trim();
 	}
 
 	public void setSinopse(String sinopse) {
