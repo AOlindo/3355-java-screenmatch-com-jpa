@@ -1,5 +1,8 @@
 package br.com.alura.screenmatch.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.OptionalDouble;
 
 import br.com.alura.screenmatch.model.enums.Categoria;
@@ -11,13 +14,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "series")
 public class Serie {
 
-	// "unique = true" quer dizer que o titulo da serie não pode ser repetido.
+	//"unique = true" quer dizer que o titulo da serie não pode ser repetido.
 	@Column(unique = true)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +37,10 @@ public class Serie {
 	private String atores;
 	private String poster;
 	private String sinopse;
+
+	//@Transient é usado quando não vai salvar o objeto no banco
+	@Transient
+	private List<Episodio> episodios = new ArrayList<>();
 
 	public Serie(DadosSerie dadosSerie) {
 		this.titulo = dadosSerie.titulo();
@@ -106,6 +115,14 @@ public class Serie {
 
 	public void setSinopse(String sinopse) {
 		this.sinopse = sinopse;
+	}
+
+	public List<Episodio> getEpisodios() {
+		return episodios;
+	}
+
+	public void setEpisodios(List<Episodio> episodios) {
+		this.episodios = episodios;
 	}
 
 	@Override
