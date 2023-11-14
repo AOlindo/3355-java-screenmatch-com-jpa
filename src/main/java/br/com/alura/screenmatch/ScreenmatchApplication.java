@@ -11,13 +11,13 @@ import br.com.alura.screenmatch.repository.SerieRepository;
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
 
+	@Autowired
+	private SerieRepository serieRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(ScreenmatchApplication.class, args);
 	}
 	
-	@Autowired
-	private SerieRepository serieRepository;
-
 	@Override
 	public void run(String... args) throws Exception {
 		Principal principal = new Principal(serieRepository);

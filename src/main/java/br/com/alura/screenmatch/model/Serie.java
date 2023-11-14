@@ -38,8 +38,7 @@ public class Serie {
 	private String poster;
 	private String sinopse;
 
-	//@Transient é usado quando não vai salvar o objeto no banco
-	@Transient
+	@OneToMany(mappedBy = "serie")
 	private List<Episodio> episodios = new ArrayList<>();
 	
 	public Serie() {
@@ -114,7 +113,7 @@ public class Serie {
 	}
 
 	public String getSinopse() {
-		return ConsultaChatGPT.obterTraducao(this.sinopse).trim();
+		return sinopse; 
 	}
 
 	public void setSinopse(String sinopse) {
