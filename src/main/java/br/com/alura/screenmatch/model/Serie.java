@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalDouble;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.alura.screenmatch.model.enums.Categoria;
 import br.com.alura.screenmatch.service.ConsultaChatGPT;
@@ -12,6 +15,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,7 +43,8 @@ public class Serie {
 	private String poster;
 	private String sinopse;
 
-	@OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Episodio> episodios = new ArrayList<>();
 	
 	public Serie() {
@@ -126,28 +131,35 @@ public class Serie {
 	}
 
 	public void setEpisodios(List<Episodio> episodios) {
+		episodios.forEach(e -> e.setSerie(this));
 		this.episodios = episodios;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("[Genero = ");
-		builder.append(genero);
-		builder.append(", titulo = ");
+		builder.append("Serie [id=");
+		builder.append(id);
+		builder.append(", titulo=");
 		builder.append(titulo);
-		builder.append(", totalTemporadas = ");
+		builder.append(", totalTemporadas=");
 		builder.append(totalTemporadas);
-		builder.append(", avaliacao = ");
+		builder.append(", avaliacao=");
 		builder.append(avaliacao);
-		builder.append(", atores = ");
+		builder.append(", genero=");
+		builder.append(genero);
+		builder.append(", atores=");
 		builder.append(atores);
-		builder.append(", poster = ");
+		builder.append(", poster=");
 		builder.append(poster);
-		builder.append(", sinopse = ");
+		builder.append(", sinopse=");
 		builder.append(sinopse);
+		builder.append(", episodios=");
+		builder.append(episodios.stream().map(e -> e.getTitulo()).collect(Collectors.toList()));
 		builder.append("]");
 		return builder.toString();
 	}
+
+	
 
 }
