@@ -138,23 +138,23 @@ public class Serie {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Serie [id=");
+		builder.append("Serie [id = ");
 		builder.append(id);
-		builder.append(", titulo=");
+		builder.append(", titulo = ");
 		builder.append(titulo);
-		builder.append(", totalTemporadas=");
+		builder.append(", totalTemporadas = ");
 		builder.append(totalTemporadas);
-		builder.append(", avaliacao=");
+		builder.append(", avaliacao = ");
 		builder.append(avaliacao);
-		builder.append(", genero=");
+		builder.append(", genero = ");
 		builder.append(genero);
-		builder.append(", atores=");
+		builder.append(", atores = ");
 		builder.append(atores);
-		builder.append(", poster=");
+		builder.append(", poster = ");
 		builder.append(poster);
-		builder.append(", sinopse=");
+		builder.append(", sinopse = ");
 		builder.append(sinopse);
-		builder.append(", episodios=");
+		builder.append(", episodios = ");
 		builder.append(episodios.stream().map(e -> e.getTitulo()).collect(Collectors.toList()));
 		builder.append("]");
 		return builder.toString();
