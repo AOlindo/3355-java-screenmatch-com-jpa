@@ -106,7 +106,24 @@ public class Episodio {
 
 	@Override
 	public String toString() {
-		return "temporada=" + temporada + ", titulo='" + titulo + '\'' + ", numeroEpisodio=" + numeroEpisodio
-				+ ", avaliacao=" + avaliacao + ", dataLancamento=" + dataLancamento;
+		StringBuilder builder = new StringBuilder();
+		builder.append("Episodio [id = ");
+		builder.append(id);
+		builder.append(", temporada = ");
+		builder.append(temporada);
+		builder.append(", titulo = ");
+		builder.append(titulo);
+		builder.append(", numeroEpisodio = ");
+		builder.append(numeroEpisodio);
+		builder.append(", avaliacao = ");
+		builder.append(avaliacao);
+		builder.append(", dataLancamento = ");
+		builder.append(dataLancamento);
+		builder.append(", serie = ");
+		builder.append(serie);
+		builder.append("]");
+		return builder.toString();
 	}
+
+	
 }

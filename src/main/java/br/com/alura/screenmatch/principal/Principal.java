@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -26,8 +27,10 @@ public class Principal {
 	private final String ENDERECO = "https://www.omdbapi.com/?t=";
 	private final String API_KEY = "&apikey=6585022c";
 	private List<DadosSerie> dadosSeries = new ArrayList<>();
-
+	
 	private SerieRepository repository;
+	
+	private List<Serie> series = new ArrayList<>();
 
 	public Principal(SerieRepository serieRepository) {
 		this.repository = serieRepository;
@@ -84,19 +87,37 @@ public class Principal {
 	}
 
 	private void buscarEpisodioPorSerie() {
-		DadosSerie dadosSerie = getDadosSerie();
-		List<DadosTemporada> temporadas = new ArrayList<>();
+		listarSerieBuscadas();
+		System.out.println("Escolha uma série pelo nome: ");
+		String nomeSerie = leitura.nextLine();
 
-		for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) {
-			var json = consumo.obterDados(ENDERECO + dadosSerie.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
-			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-			temporadas.add(dadosTemporada);
+		Optional<Serie> serie = series.stream()
+				.filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase())).findFirst();
+
+		if (serie.isPresent()) {
+			Serie serieEncontrada = serie.get();
+			List<DadosTemporada> temporadas = new ArrayList<>();
+			for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
+				var json = consumo.obterDados(
+						ENDERECO + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i + API_KEY);
+				DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+				temporadas.add(dadosTemporada);
+			}
+			temporadas.forEach(System.out::println);
+
+			List<Episodio> episodios = temporadas.stream()
+					.flatMap(d -> d.episodios().stream().map(e -> new Episodio(d.numero(), e)))
+					.collect(Collectors.toList());
+			
+			serieEncontrada.setEpisodios(episodios);
+			repository.save(serieEncontrada);
+		} else {
+			System.out.println("Série não encontrada!");
 		}
-		temporadas.forEach(System.out::println);
 	}
 
 	private void listarSerieBuscadas() {
-		List<Serie> series = repository.findAll();
+		series = repository.findAll();
 		series.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
 
 	}
