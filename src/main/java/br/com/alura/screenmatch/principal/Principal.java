@@ -27,9 +27,9 @@ public class Principal {
 	private final String ENDERECO = "https://www.omdbapi.com/?t=";
 	private final String API_KEY = "&apikey=6585022c";
 	private List<DadosSerie> dadosSeries = new ArrayList<>();
-	
+
 	private SerieRepository repository;
-	
+
 	private List<Serie> series = new ArrayList<>();
 
 	public Principal(SerieRepository serieRepository) {
@@ -45,6 +45,7 @@ public class Principal {
 					2 - Buscar episódios
 					3 - Listar séries buscadas
 					4 - Buscar série por título
+					5 - Buscar série por Ator
 					0 - Sair
 					""";
 
@@ -65,6 +66,9 @@ public class Principal {
 			case 4:
 				buscarSeriePorTitulo();
 				break;
+			case 5:
+				buscarSeriePorAtor();
+				break;
 			case 0:
 				System.out.println("Saindo...");
 				break;
@@ -74,14 +78,26 @@ public class Principal {
 		}
 	}
 
+	private void buscarSeriePorAtor() {
+		System.out.println("Qual o nome para busca? ");
+		var nomeAtor = leitura.nextLine();
+		System.out.println("Avaliações a partir de que valor? ");
+		var avaliacao = leitura.nextDouble();
+		List<Serie> seriesEncontradas = repository.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
+		System.out.println("Série em que " + nomeAtor +  " trabalhou: ");
+
+		seriesEncontradas.forEach(s -> System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
+
+	}
+
 	private void buscarSeriePorTitulo() {
 		System.out.println("Escolha a série pelo nome: ");
 		var nomeSerie = leitura.nextLine();
 		Optional<Serie> serieBuscada = repository.findByTituloContainingIgnoreCase(nomeSerie);
-		
-		if(serieBuscada.isPresent()) {
+
+		if (serieBuscada.isPresent()) {
 			System.out.println("Dados da série: " + serieBuscada.get());
-		}else {
+		} else {
 			System.out.println("Série não encontrada!");
 		}
 	}
@@ -123,7 +139,7 @@ public class Principal {
 			List<Episodio> episodios = temporadas.stream()
 					.flatMap(d -> d.episodios().stream().map(e -> new Episodio(d.numero(), e)))
 					.collect(Collectors.toList());
-			
+
 			serieEncontrada.setEpisodios(episodios);
 			repository.save(serieEncontrada);
 		} else {
